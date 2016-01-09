@@ -4,6 +4,6 @@ setup(name='composite-plate',
     author='John M. Robinson',
     author_email='jr226@buffalo.edu',
     version='0.1',
-    py_modules=['Composite-Plate'],
+    py_modules=['composite_plate'],
     packages=['distutils','numpy']
 )
