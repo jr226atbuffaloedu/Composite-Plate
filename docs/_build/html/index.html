@@ -1,0 +1,559 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to Composite Plate’s documentation! &mdash; Composite Plate 0.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Composite Plate 0.1.1 documentation" href="#" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-composite-plate-s-documentation">
+<h1>Welcome to Composite Plate&#8217;s documentation!<a class="headerlink" href="#welcome-to-composite-plate-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span>Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span>Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span>Search Page</span></a></li>
+</ul>
+</div>
+<div class="section" id="how-to-use-composite-plate">
+<h1>How to Use Composite Plate<a class="headerlink" href="#how-to-use-composite-plate" title="Permalink to this headline">¶</a></h1>
+<p>The goal of this module is to provide you with a way to determine how a
+composite plate will respond to either stresses or strains.  In order to
+do this, you must define the composite plate in the following way.</p>
+<ol class="arabic simple">
+<li>Define a ply material using <a class="reference internal" href="#composite_plate.Ply" title="composite_plate.Ply"><code class="xref py py-class docutils literal"><span class="pre">composite_plate.Ply</span></code></a></li>
+<li>Use the ply and a given orientation to define a laminae using <a class="reference internal" href="#composite_plate.Laminae" title="composite_plate.Laminae"><code class="xref py py-class docutils literal"><span class="pre">composite_plate.Laminae</span></code></a></li>
+<li>One or more of the laminae in a list to define a laminate using <a class="reference internal" href="#composite_plate.Laminate" title="composite_plate.Laminate"><code class="xref py py-class docutils literal"><span class="pre">composite_plate.Laminate</span></code></a></li>
+</ol>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">E1</span>      <span class="o">=</span> <span class="mf">133.44</span><span class="p">;</span>   <span class="c"># Modulus in fiber direction        [GPa]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E2</span>      <span class="o">=</span> <span class="mf">8.78</span><span class="p">;</span>     <span class="c"># Modulus in transverse direction   [GPa]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G12</span>     <span class="o">=</span> <span class="mf">3.254</span><span class="p">;</span>    <span class="c"># Shear Modulus                     [GPa]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nu12</span>    <span class="o">=</span> <span class="mf">0.26</span><span class="p">;</span>     <span class="c"># Poissons Ratio (principal)        [   ]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span>       <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>        <span class="c"># Ply thickness                     [mm]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ply</span> <span class="o">=</span> <span class="n">composite_plate</span><span class="o">.</span><span class="n">Ply</span><span class="p">(</span><span class="n">E1</span><span class="o">=</span><span class="n">E1</span><span class="p">,</span><span class="n">E2</span><span class="o">=</span><span class="n">E2</span><span class="p">,</span><span class="n">G12</span><span class="o">=</span><span class="n">G12</span><span class="p">,</span><span class="n">nu12</span><span class="o">=</span><span class="n">nu12</span><span class="p">,</span><span class="n">h</span><span class="o">=</span><span class="n">h</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta_deg</span> <span class="o">=</span> <span class="mi">45</span><span class="p">;</span>     <span class="c"># Orientation (+ from X)            [deg]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta_rad</span> <span class="o">=</span> <span class="n">theta_deg</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.0</span><span class="p">;</span>    <span class="c">#                 [rad]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminae1</span> <span class="o">=</span> <span class="n">composite_plate</span><span class="o">.</span><span class="n">Laminae</span><span class="p">(</span><span class="n">ply</span><span class="p">,</span> <span class="n">theta_rad</span><span class="p">);</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminae2</span> <span class="o">=</span> <span class="n">composite_plate</span><span class="o">.</span><span class="n">Laminae</span><span class="p">(</span><span class="n">ply</span><span class="p">,</span><span class="o">-</span><span class="n">theta_rad</span><span class="p">);</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminate</span> <span class="o">=</span> <span class="n">composite_plate</span><span class="o">.</span><span class="n">Laminate</span><span class="p">([</span><span class="n">laminae1</span><span class="p">,</span> <span class="n">laminae2</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>After the laminate is created, you can then apply strains and see the
+resulting stress using <a class="reference internal" href="#composite_plate.Laminate.applied_strain" title="composite_plate.Laminate.applied_strain"><code class="xref py py-func docutils literal"><span class="pre">composite_plate.Laminate.applied_strain()</span></code></a>.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Epsilon</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">matrix</span><span class="p">([]);</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Kappa</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">matrix</span><span class="p">([]);</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">force_and_moment_dict</span> <span class="o">=</span> <span class="n">laminate</span><span class="o">.</span><span class="n">applied_strain</span><span class="p">(</span><span class="n">Epsilon</span><span class="p">,</span> <span class="n">Kappa</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">N</span> <span class="o">=</span> <span class="n">force_and_moment_dict</span><span class="p">(</span><span class="s">&#39;N&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="s">&quot;The forces are Nxx = {0}, Nyy = {1}, Nxy = {2}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">N</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">N</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">M</span> <span class="o">=</span> <span class="n">force_and_moment_dict</span><span class="p">(</span><span class="s">&#39;M&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="s">&quot;The moments are Mxx = {0}, Myy = {1}, Mxy = {2}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="module-composite_plate">
+<span id="modules"></span><h1>Modules<a class="headerlink" href="#module-composite_plate" title="Permalink to this headline">¶</a></h1>
+<dl class="exception">
+<dt id="composite_plate.CompPlateError">
+<em class="property">exception </em><code class="descclassname">composite_plate.</code><code class="descname">CompPlateError</code><a class="reference internal" href="_modules/composite_plate.html#CompPlateError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#composite_plate.CompPlateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for exceptions in this module.</p>
+<dl class="attribute">
+<dt id="composite_plate.CompPlateError.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#composite_plate.CompPlateError.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="composite_plate.InputError">
+<em class="property">exception </em><code class="descclassname">composite_plate.</code><code class="descname">InputError</code><span class="sig-paren">(</span><em>expr</em>, <em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/composite_plate.html#InputError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#composite_plate.InputError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised for errors in the input.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">expr -- input expression in which the error occurred</code></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">msg  -- explanation of the error</code></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="composite_plate.Laminae">
+<em class="property">class </em><code class="descclassname">composite_plate.</code><code class="descname">Laminae</code><span class="sig-paren">(</span><em>ply</em>, <em>theta_rad</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/composite_plate.html#Laminae"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#composite_plate.Laminae" title="Permalink to this definition">¶</a></dt>
+<dd><p>Composite Laminae defined for each layer in a composite.</p>
+<p>A laminae is an individual layer in a composite laminate.  It
+consists of a ply rotated some angle in the composite.  The angle is
+defined as the angle between the plys primary (1) axis and the
+composites x axis.</p>
+<p class="rubric">Example</p>
+<p>To instantiate a laminae, you must start with a ply, and then use
+the ply instance and a specified angle to get a single laminae.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">E1</span>      <span class="o">=</span> <span class="mf">133.44</span><span class="p">;</span>   <span class="c"># Modulus in fiber direction        [GPa]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E2</span>      <span class="o">=</span> <span class="mf">8.78</span><span class="p">;</span>     <span class="c"># Modulus in transverse direction   [GPa]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G12</span>     <span class="o">=</span> <span class="mf">3.254</span><span class="p">;</span>    <span class="c"># Shear Modulus                     [GPa]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nu12</span>    <span class="o">=</span> <span class="mf">0.26</span><span class="p">;</span>     <span class="c"># Poissons Ratio (principal)        [   ]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span>       <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>        <span class="c"># Ply thickness                     [mm]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ply</span> <span class="o">=</span> <span class="n">Ply</span><span class="p">(</span><span class="n">E1</span><span class="o">=</span><span class="n">E1</span><span class="p">,</span><span class="n">E2</span><span class="o">=</span><span class="n">E2</span><span class="p">,</span><span class="n">G12</span><span class="o">=</span><span class="n">G12</span><span class="p">,</span><span class="n">nu12</span><span class="o">=</span><span class="n">nu12</span><span class="p">,</span><span class="n">h</span><span class="o">=</span><span class="n">h</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta_deg</span> <span class="o">=</span> <span class="mi">45</span><span class="p">;</span>     <span class="c"># Orientation (+ from X)            [deg]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta_rad</span> <span class="o">=</span> <span class="n">theta_deg</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.0</span><span class="p">;</span>    <span class="c">#                 [rad]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminae1</span> <span class="o">=</span> <span class="n">Laminae</span><span class="p">(</span><span class="n">ply</span><span class="p">,</span> <span class="n">theta_rad</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="composite_plate.Laminae.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>ply</em>, <em>theta_rad</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/composite_plate.html#Laminae.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#composite_plate.Laminae.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the composite Laminae</p>
+<p>Defines an individual laminae based on the ply and orientation
+of the laminae x-axis to the ply 1 axis (theta_rad)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ply</strong> (<a class="reference internal" href="#composite_plate.Ply" title="composite_plate.Ply"><em>composite_plate.Ply</em></a>) &#8211; A ply object</li>
+<li><strong>theta_rad</strong> (<em>float</em>) &#8211; The orientation of the plys primary (1) axis to the composites x axis [radians]</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="composite_plate.Laminae.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#composite_plate.Laminae.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="composite_plate.Laminate">
+<em class="property">class </em><code class="descclassname">composite_plate.</code><code class="descname">Laminate</code><span class="sig-paren">(</span><em>laminae_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/composite_plate.html#Laminate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#composite_plate.Laminate" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class defining a composite Laminate.  Input is as the composites
+laminae, the laminae thickness and stacking order.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>laminae_list</strong> (<em>list of composite_plate.Laminae</em>) &#8211; A list of laminae which compose the laminate, in order from bottom to top</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt>
+<code class="descname">A,B,D</code></dt>
+<dd><p><em>numpy.matrix</em></p>
+<p>Compliance matrices will become class
+variables after __init__.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="composite_plate.Laminate.laminae_midplane_z">
+<code class="descname">laminae_midplane_z</code><a class="headerlink" href="#composite_plate.Laminate.laminae_midplane_z" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>list[float]</em></p>
+<p>A list of heights from the
+midplane of the laminate to the midplane of each laminae.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="composite_plate.Laminate.Epsilon">
+<code class="descname">Epsilon</code><a class="headerlink" href="#composite_plate.Laminate.Epsilon" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>numpy.matrix</em></p>
+<p>If defined contains a vector [3x1] of the
+midplane laminate strains.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="composite_plate.Laminate.Kappa">
+<code class="descname">Kappa</code><a class="headerlink" href="#composite_plate.Laminate.Kappa" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>numpy.matrix</em></p>
+<p>If defined contains a vector [3x1] of the
+laminate curvatures.</p>
+</dd></dl>
+
+<p class="rubric">Example</p>
+<p>To instantiate a laminate, you must start with one or more laminae,
+and then use the laminae instance(s) in a list to create the
+laminate.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">E1</span>      <span class="o">=</span> <span class="mf">133.44</span><span class="p">;</span>   <span class="c"># Modulus in fiber direction        [GPa]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E2</span>      <span class="o">=</span> <span class="mf">8.78</span><span class="p">;</span>     <span class="c"># Modulus in transverse direction   [GPa]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G12</span>     <span class="o">=</span> <span class="mf">3.254</span><span class="p">;</span>    <span class="c"># Shear Modulus                     [GPa]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nu12</span>    <span class="o">=</span> <span class="mf">0.26</span><span class="p">;</span>     <span class="c"># Poissons Ratio (principal)        [   ]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span>       <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>        <span class="c"># Ply thickness                     [mm]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ply</span> <span class="o">=</span> <span class="n">Ply</span><span class="p">(</span><span class="n">E1</span><span class="o">=</span><span class="n">E1</span><span class="p">,</span><span class="n">E2</span><span class="o">=</span><span class="n">E2</span><span class="p">,</span><span class="n">G12</span><span class="o">=</span><span class="n">G12</span><span class="p">,</span><span class="n">nu12</span><span class="o">=</span><span class="n">nu12</span><span class="p">,</span><span class="n">h</span><span class="o">=</span><span class="n">h</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta_deg</span> <span class="o">=</span> <span class="mi">45</span><span class="p">;</span>     <span class="c"># Orientation (+ from X)            [deg]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta_rad</span> <span class="o">=</span> <span class="n">theta_deg</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.0</span><span class="p">;</span>    <span class="c">#                 [rad]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminae1</span> <span class="o">=</span> <span class="n">Laminae</span><span class="p">(</span><span class="n">ply</span><span class="p">,</span> <span class="n">theta_rad</span><span class="p">);</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminae2</span> <span class="o">=</span> <span class="n">Laminae</span><span class="p">(</span><span class="n">ply</span><span class="p">,</span><span class="o">-</span><span class="n">theta_rad</span><span class="p">);</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminate</span> <span class="o">=</span> <span class="n">Laminate</span><span class="p">([</span><span class="n">laminae1</span><span class="p">,</span> <span class="n">laminae2</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="math">
+\[\begin{split}[N](3x1) &amp;= [A](3x3)*[\epsilon](3x1) +[B](3x3)*[\kappa](3x1) \\
+[M](3x1) &amp;= [B](3x3)*[\epsilon](3x1) +[D](3x3)*[\kappa](3x1)\end{split}\]</div>
+<p>Normal Force/ unit lenght [F/l] in x,y and xy directions:</p>
+<div class="math">
+\[\begin{split}[N] &amp;= [N_{xx} N_{yy} N_{xy}]^T \\
+[M] &amp;= [M_{xx} M_{yy} M_{xy}]^T\end{split}\]</div>
+<p>-&gt; Moment / unit length [F*l/l]</p>
+<div class="math">
+\[\begin{split}[\epsilon] &amp;= [\epsilon^0_{xx} \epsilon^0_{yy} \gamma^0_{xy}]^T \\
+[\kappa] &amp;= [\kappa_{xx} \kappa_{yy} \kappa_{xy}]^T\end{split}\]</div>
+<p>Midplane strains indicated by <span class="math">\(\epsilon^0\)</span></p>
+<div class="math">
+\[\begin{split}[A]_{mn} = \sum_{j=1}^N(\bar{Q}_{mn})_j(h_j -h_{j-1})\\
+[B]_{mn} = \frac{1}{2}\sum_{j=1}^N(\bar{Q}_{mn})_j(h_j^2 -h_{j-1}^2)\\
+[D]_{mn} = \frac{1}{3}\sum_{j=1}^N(\bar{Q}_{mn})_j(h_j^3 -h_{j-1}^3)\\\end{split}\]</div>
+<p>Laminae stiffness matrix <span class="math">\(\bar{Q}\)</span></p>
+<div class="math">
+\[\begin{split}[\epsilon] &amp;= [A_1]*[N] + [B_1]*[M] \\
+[\kappa] &amp;= [C_1]*[N] + [D_1]*[M] \\
+\\
+[A_1] &amp;= [A^{-1}]+[A^{-1}][B][D^{*-1}][B][A^{-1}] \\
+[B_1] &amp;= -[A^{-1}][B][D^{*-1}] \\
+[C_1] &amp;= -[D^{*-1}][B][A^{-1}] = [B_1]^T \\
+[D^*] &amp;= [D] -[B][A^{-1}][B] \\
+[D_1] &amp;= [D^{*-1}]\end{split}\]</div>
+<dl class="method">
+<dt id="composite_plate.Laminate.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>laminae_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/composite_plate.html#Laminate.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#composite_plate.Laminate.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize class Laminate</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>self</strong> &#8211; This object instance.</li>
+<li><strong>laminae_list</strong> &#8211; A list containing objects of type Laminae,
+defined in Laminae.py</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>ply1 = CompositePlate.Ply(...)
+laminae1 = CompositePlate.Laminae
+laminate = CompositePlate.Laminate([laminae1, laminae2, laminae1]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="composite_plate.Laminate.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#composite_plate.Laminate.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="composite_plate.Laminate.applied_strain">
+<code class="descname">applied_strain</code><span class="sig-paren">(</span><em>Epsilon</em>, <em>Kappa</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/composite_plate.html#Laminate.applied_strain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#composite_plate.Laminate.applied_strain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for applying midplane strains to the laminate instance and determine the resulting midplane stresses</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Epsilon</strong> (<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.10)"><em>numpy.matrix</em></a>) &#8211; A [3x1] vector of midplane strains.
+<span class="math">\([\epsilon]_1 = \epsilon_{xx}^0\)</span>, <span class="math">\([\epsilon]_2 = \epsilon_{yy}^0\)</span>, <span class="math">\([\epsilon]_3 = \gamma_{xy}^0\)</span></li>
+<li><strong>Kappa</strong> (<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.10)"><em>numpy.matrix</em></a>) &#8211; A [3x1] vector of curvatures.
+<span class="math">\([\kappa]_1 = \kappa_{xx}\)</span>, <span class="math">\([\kappa]_2 = \kappa_{yy}\)</span>, <span class="math">\([\kappa]_3 = \kappa_{xy}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><p>A dictionary containing the Normal stresses (N) and Moments (M)</p>
+<p>N (numpy.matrix): A [3x1] vector containing the normal stresses</p>
+<p>M (numpy.matrix): A [3x1] vector containing the resulting moments</p>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.10)">numpy.matrix</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="composite_plate.Laminate.applied_stress">
+<code class="descname">applied_stress</code><span class="sig-paren">(</span><em>N</em>, <em>M</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/composite_plate.html#Laminate.applied_stress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#composite_plate.Laminate.applied_stress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for applying forces normalized by the section width to the laminate at the midplane.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>N</strong> (<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.10)"><em>numpy.matrix</em></a>) &#8211; A [3x1] vector of normal stresses normalized by the section width
+<span class="math">\([N]_1=N_{xx}\)</span>, <span class="math">\([N]_2=N_{yy}\)</span>, <span class="math">\([N]_3=N_{xy}\)</span></li>
+<li><strong>M</strong> (<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.10)"><em>numpy.matrix</em></a>) &#8211; A [3x1] vector of moments normalized by the section width
+<span class="math">\([M]_1=M_{xx}\)</span>, <span class="math">\([M]_2=M_{yy}\)</span>, <span class="math">\([M]_3=M_{xy}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><p>A dictionary containing the normal strains (Epsilon) and curvatures (Kappa)</p>
+<p>Epsilon (numpy.matrix): A [3x1] vector of laminate midplane strains.</p>
+<p>Kappa (numpy.matrix): A [3x1] vector of laminate curvatures.</p>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.10)">numpy.matrix</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="composite_plate.Laminate.midplane_strain">
+<code class="descname">midplane_strain</code><span class="sig-paren">(</span><em>Epsilon=None</em>, <em>Kappa=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/composite_plate.html#Laminate.midplane_strain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#composite_plate.Laminate.midplane_strain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for determining the laminae midplane strains in
+response to laminate nidplane strains and curvatures.</p>
+<p>If no laminate strain (Epsilon) or curvature (Kappa) is specified,
+the method will attempt to use the laminate&#8217;s current strain
+and curvaure.  If they haven&#8217;t been set, the method will throw
+an <a class="reference internal" href="#composite_plate.InputError" title="composite_plate.InputError"><code class="xref py py-class docutils literal"><span class="pre">InputError</span></code></a> exception.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Epsilon</strong> (<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.10)"><em>numpy.matrix</em></a>) &#8211; A [3x1] vector of laminate midplane
+strains.  If a value is specified, this will be assigned
+to the laminate as the current state of strain.</li>
+<li><strong>Kappa</strong> (<a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.10)"><em>numpy.matrix</em></a>) &#8211; A [3x1] vector of laminate curvatures.
+If a value is specified, this will be assigned to the
+laminate as the current state of curvature.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><p>A list of Epsilon values corresponding to the
+midplane strain in each laminae of the laminate.</p>
+<p>Epsilon (numpy.matrix): A [3x1] vector of laminate midplane strains.</p>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.matrix.html#numpy.matrix" title="(in NumPy v1.10)">numpy.matrix</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="composite_plate.Ply">
+<em class="property">class </em><code class="descclassname">composite_plate.</code><code class="descname">Ply</code><span class="sig-paren">(</span><em>E1</em>, <em>E2</em>, <em>G12</em>, <em>nu12</em>, <em>h</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/composite_plate.html#Ply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#composite_plate.Ply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines a ply for a composite.</p>
+<p>A ply is the material which goes into a composite.  Typically a ply
+will have a different modulus in the primary (E1) direction and the
+traverse (E2) direction.  The ply will have a shear modulus (G12)
+and poissons ratio (nu12), as well as a thickness (h)</p>
+<p class="rubric">Example</p>
+<p>To instantiate a ply, you must specify the plys parameter values:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">E1</span>      <span class="o">=</span> <span class="mf">133.44</span><span class="p">;</span>   <span class="c"># Modulus in fiber direction        [GPa]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E2</span>      <span class="o">=</span> <span class="mf">8.78</span><span class="p">;</span>     <span class="c"># Modulus in transverse direction   [GPa]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G12</span>     <span class="o">=</span> <span class="mf">3.254</span><span class="p">;</span>    <span class="c"># Shear Modulus                     [GPa]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nu12</span>    <span class="o">=</span> <span class="mf">0.26</span><span class="p">;</span>     <span class="c"># Poissons Ratio (principal)        [   ]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span>       <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>        <span class="c"># Ply thickness                     [mm]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ply</span> <span class="o">=</span> <span class="n">Ply</span><span class="p">(</span><span class="n">E1</span><span class="o">=</span><span class="n">E1</span><span class="p">,</span><span class="n">E2</span><span class="o">=</span><span class="n">E2</span><span class="p">,</span><span class="n">G12</span><span class="o">=</span><span class="n">G12</span><span class="p">,</span><span class="n">nu12</span><span class="o">=</span><span class="n">nu12</span><span class="p">,</span><span class="n">h</span><span class="o">=</span><span class="n">h</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="composite_plate.Ply.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>E1</em>, <em>E2</em>, <em>G12</em>, <em>nu12</em>, <em>h</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/composite_plate.html#Ply.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#composite_plate.Ply.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes the properties of the anisotropic ply.</p>
+<p>Anisotropic ply.  Need to define 4 of [E1,E2,nu12,nu21,G12] (4
+of 5 independent variables).
+Dependent constraint: nu21/E2 = nu12/E1</p>
+<p>Units can be any set of self consistent units desired.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>E1</strong> (<em>float</em>) &#8211; Modulus in the primary direction</li>
+<li><strong>E2</strong> (<em>float</em>) &#8211; Modulus perpendicular to the primary direction</li>
+<li><strong>G12</strong> (<em>float</em>) &#8211; Shear Modulus</li>
+<li><strong>nu12</strong> (<em>float</em>) &#8211; Poissons Ratio</li>
+<li><strong>h</strong> (<em>float</em>) &#8211; Ply thickness</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Exceptions:</dt>
+<dd>InputError:     If any input value is not &gt; 0</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="composite_plate.Ply.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#composite_plate.Ply.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="composite_plate.Ply.degree_of_isotropy">
+<code class="descname">degree_of_isotropy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/composite_plate.html#Ply.degree_of_isotropy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#composite_plate.Ply.degree_of_isotropy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the degree of Isotropy of the Ply (E1/E2)</p>
+<p>E1/E2 is a metric used to compare how isotropic plys are</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="composite_plate.PlyFromFiber">
+<em class="property">class </em><code class="descclassname">composite_plate.</code><code class="descname">PlyFromFiber</code><a class="reference internal" href="_modules/composite_plate.html#PlyFromFiber"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#composite_plate.PlyFromFiber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate ply properties from Fiber and Matrix properties</p>
+<p>Will provide estimates of various elastic and thermal ply properties
+based on the Fiber and matrix properties</p>
+<dl class="method">
+<dt id="composite_plate.PlyFromFiber.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/composite_plate.html#PlyFromFiber.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#composite_plate.PlyFromFiber.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the PlyFromFiber object, all member variables to
+NaN</p>
+<p>This initializes all possible member variables to NaN, since
+different estimated properties require different variables to be
+defined.  When using, define the required fiber and matrix values
+for your property of interest, and then calculate the property.</p>
+<dl class="docutils">
+<dt>Member Variables:</dt>
+<dd><p class="first">E_f:    Elastic modulus of the fiber
+v_f:    Volume fraction of the ply that is fiber
+nu_f:   Poissons ratio of the fiber
+G_f:    Shear modulus of the fiber</p>
+<p class="last">E_m:    Elastic modulus of the matrix
+v_m:    Volume fraction of the ply that is matrix
+nu_m:   Poissons ratio of the matrix
+G_m:    Shear modulus of the matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="composite_plate.PlyFromFiber.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#composite_plate.PlyFromFiber.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="composite_plate.PlyFromFiber.elastic_props">
+<code class="descname">elastic_props</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/composite_plate.html#PlyFromFiber.elastic_props"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#composite_plate.PlyFromFiber.elastic_props" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the elastic properties of the ply from the fiber
+and matrix properties.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to Composite Plate&#8217;s documentation!</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+<li><a class="reference internal" href="#how-to-use-composite-plate">How to Use Composite Plate</a></li>
+<li><a class="reference internal" href="#module-composite_plate">Modules</a></li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, John Robinson.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/index.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
