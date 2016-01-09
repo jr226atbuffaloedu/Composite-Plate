@@ -279,6 +279,13 @@ class Laminate(object):
         [D^*] &= [D] -[B][A^{-1}][B] \\
         [D_1] &= [D^{*-1}] 
     """
+
+    def __repr__(self):
+        repr_str = "";
+        for laminae in self.laminae_list:
+            repr_str += "{0}\n".format(laminae)
+
+        return repr_str;
     
     def __init__(self,laminae_list):
         """Initialize class Laminate
