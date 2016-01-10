@@ -19,3 +19,12 @@ After Installing:
 
   cd docs
   make html
+  
+Then direct your browser to ``Composite-Plate/docs/_build/html/index.html``
+
+Testing
+-------
+
+License
+-------
+Released under MIT license, see ``LICENSE`` for details.
